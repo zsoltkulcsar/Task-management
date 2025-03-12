@@ -1,6 +1,36 @@
-﻿namespace TaskManagement.Infrastructure.Repositories.User
+﻿using Microsoft.EntityFrameworkCore;
+using TaskManagement.Domain.Entities;
+using TaskManagement.Infrastructure.Data;
+
+namespace TaskManagement.Infrastructure.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IRepository<UserEntity>
     {
+        private readonly ApplicationDbContext _context;
+
+        public UserRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AddAsync(UserEntity user)
+        {
+            await _context.Users.AddAsync(user);
+        }
+
+        public async Task<UserEntity> GetByIdAsync(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<UserEntity>> GetAllAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

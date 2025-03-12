@@ -1,6 +1,9 @@
-﻿namespace TaskManagement.Application.Interfaces
+﻿using System.IdentityModel.Tokens.Jwt;
+
+namespace TaskManagement.Application.Interfaces
 {
-    class IUserService
+    public interface IUserService
     {
+        Task<JwtSecurityToken> RegisterAsync(string userName, string password, string email);
     }
 }
