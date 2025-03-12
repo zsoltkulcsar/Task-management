@@ -18,7 +18,7 @@ namespace TaskManagement.Infrastructure.Repositories
             await _context.Users.AddAsync(user);
         }
 
-        public async Task<UserEntity> GetByIdAsync(int id)
+        public async Task<UserEntity> GetByIdAsync(Guid id)
         {
             return await _context.Users.FindAsync(id);
         }
@@ -31,6 +31,16 @@ namespace TaskManagement.Infrastructure.Repositories
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public Task DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(TaskEntity entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
