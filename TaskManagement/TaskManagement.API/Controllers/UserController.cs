@@ -3,8 +3,6 @@ using System.IdentityModel.Tokens.Jwt;
 using TaskManagement.Application.Dtos;
 using TaskManagement.Application.Interfaces;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace TaskManagement.API.Controllers
 {
     [Route("api/[controller]")]
@@ -27,6 +25,23 @@ namespace TaskManagement.API.Controllers
             }
 
             var token = await _userService.RegisterAsync(registerDto.Name, registerDto.Password, registerDto.Email);
+
+            return Ok(new
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token)
+            });
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            var user = await _userService.FindUserByEmailAsync(loginDto.Email);
+            if (user == null) return Unauthorized("Invalid credentials");
+
+            var isPasswordValid = await _userService.ValidatePasswordAsync(user, loginDto.Password);
+            if (!isPasswordValid) return Unauthorized("Invalid credentials");
+
+            var token = _userService.GenerateJwtToken(user);
 
             return Ok(new
             {

@@ -1,12 +1,11 @@
-﻿namespace TaskManagement.Domain.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+
+namespace TaskManagement.Domain.Entities
 {
-    public class UserEntity
+    public class UserEntity : IdentityUser<Guid>
     {
-        public Guid Id { get; set; }
-
         public required string Name { get; set; }
-
-        public required string Email { get; set; }
 
         public required string Password { get; set; }
 
